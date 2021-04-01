@@ -1,0 +1,33 @@
+#!/usr/bin/python
+
+import subprocess
+
+
+USER = 'jf'
+HOST = '34.107.39.200'
+LEADER = '2021-03-29/target/leader'
+COLUMN = 'CPU'
+INTERVAL = 0.5
+
+
+# ssh user@host programm | while read line; do ... done
+
+proc = subprocess.Popen(['ssh', f'{USER}@{HOST}', LEADER, COLUMN, str(INTERVAL)], stdout=subprocess.PIPE)
+
+maximum = 0
+max_pid = 0
+max_name = ''
+for line in proc.stdout:
+    line = str(line, encoding='ascii')
+    line = line.strip()
+
+    pid, usage, name = line.split(':')
+    usage = float(usage)
+    if usage > maximum:
+        maximum = usage
+        max_pid = pid
+        max_name = name
+        print(f'maximum: {maximum}, maxpid: {max_pid}, maxname: {max_name}')
+
+    # print(f'pid: {pid}, usage: {usage}, name: {name}, maximum: {maximum}, maxpid: {max_pid}, maxname: {max_name}')
+	
