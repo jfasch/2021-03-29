@@ -2,12 +2,16 @@
 
 #set -e
 
-INTERVAL=0.5
+COL=$1
+INTERVAL=$2
 
-# attention: %CPU is at column 9, so these two variables must be
-# modified together
-COLNAME=%CPU
-COLNUM=9
+if [ $COL = MEM ]; then   
+    COLNAME=%MEM
+    COLNUM=10
+else
+    COLNAME=%CPU
+    COLNUM=9
+fi
 
 while true; do
     # everybody knows how sed works, so this is a no-comment :-)
