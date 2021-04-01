@@ -2,7 +2,6 @@
 
 #set -e
 
-ITERATIONS=-
 INTERVAL=0.5
 
 # attention: %CPU is at column 9, so these two variables must be
@@ -10,14 +9,10 @@ INTERVAL=0.5
 COLNAME=%CPU
 COLNUM=9
 
-i=$ITERATIONS
-while [ $ITERATIONS = '-' ] || [ $i -ne 0 ]; do
+while true; do
     # everybody knows how sed works, so this is a no-comment :-)
     top -n 1 -o $COLNAME -b | head -n8 | tail -n1 | \
 	sed 's/\s\+/ /g' | sed 's/^\s*//g' | \
 	cut -d' ' -f1,$COLNUM,12 --output-delimiter=:
     sleep $INTERVAL
-    if [ $ITERATIONS != '-' ]; then
-	i=$((i-1))
-    fi
 done
